@@ -4,19 +4,19 @@ class OrderItemsController < ApplicationController
 
   # GET /order_items
   # GET /order_items.json
-  def index
-    @order_items = OrderItem.all
-  end
+  # def index
+  #   @order_items = OrderItem.all
+  # end
 
   # GET /order_items/1
   # GET /order_items/1.json
-  def show
-  end
+  # def show
+  # end
 
   # GET /order_items/new
-  def new
-    # @order_item = OrderItem.new(params[:product_id])
-  end
+  # def new
+  #   # @order_item = OrderItem.new(params[:product_id])
+  # end
 
   # GET /order_items/1/edit
   def edit
@@ -25,7 +25,7 @@ class OrderItemsController < ApplicationController
   # POST /order_items
   # POST /order_items.json
   def create
-    @order_item = OrderItem.new(product_id: params[:product_id], order_id: @order.id)
+    @order_item = @order.order_items.new(product_id: params[:product_id], quantity: 1)
 
     respond_to do |format|
       if @order_item.save
@@ -64,13 +64,23 @@ class OrderItemsController < ApplicationController
 
   private
     def load_order
-      begin
-        @order = Order.find(session[:order_id])
-      rescue ActiveRecord::RecordNotFound
-        @order = Order.create(status: "unsubmitted")
+      # @order = Order.find_or_initialize_by_id(session[:order_id], status: "unsubmitted")
+      @order = Order.find_or_initialize_by(session[:order_id])
+      if @order.new_record?
+        @order.status = "unsubmitted"
         @order.save
         session[:order_id] = @order.id
       end
+
+      #PREVIOUS CODE
+      # begin
+
+      #   @order = Order.find(session[:order_id])
+      # rescue ActiveRecord::RecordNotFound
+      #   @order = Order.create(status: "unsubmitted")
+      #   @order.save
+      #   session[:order_id] = @order.id
+      # end
     end
 
     # Use callbacks to share common setup or constraints between actions.
