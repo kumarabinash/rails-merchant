@@ -25,7 +25,33 @@ class OrderItemsController < ApplicationController
   # POST /order_items
   # POST /order_items.json
   def create
-    @order_item = @order.order_items.new(product_id: params[:product_id], quantity: 1)
+    @order_item = @order.order_items.find_or_initialize_by(product_id: params[:product_id])
+    @order_item.quantity += 1
+    # @order_item = @order.order_items.new(product_id: params[:product_id], quantity: 1)
+    # product_id = params[:product_id]
+    # @order.order_items.collect do |order_item|
+    #   if order_item.product_id = product_id
+    #     # order_item.quantity = order_item.quantity 
+    #     puts order_item.quantity
+    #     # order_item.update
+    #   else
+    #     @order_item = @order.order_item.new(product_id: params[:product_id], quantity: 1)
+    #   end
+    # end
+
+
+
+    # @order_item = OrderItem.find_or_initialize_by(product_id: params[:product_id])
+    # if @order_item.new_record?
+    #   @order_item.order_id = @order.id
+    #   @order_item.quantity = 1
+    #   @order_item.save
+    # else
+    #   @order_item.quantity = @order_item.quantity + 1
+    #   @order_item.save
+    # end
+
+    # @order
 
     respond_to do |format|
       if @order_item.save
