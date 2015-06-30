@@ -6,10 +6,11 @@
   <tbody>
     <% @products.each do |product| %>
       <tr>
-        <td><%= image_tag "products/#{product.image_url}", size: "150x150 " %></td>
+        <td><%= image_tag "products/#{product.image_url}", size: "150x150" %></td>
         <td><span class="product_title"><%= link_to product.title, product_path(product) %></span><%= product.description %></td>
         <td><%= print_price(product.price) %></td>
         <td><%= print_stock(product.stock) %></td>
+        <td><%= button_to "Add to Card", order_items_path(product_id: product.id) %></td>
       </tr>
     <% end %>
   </tbody>
